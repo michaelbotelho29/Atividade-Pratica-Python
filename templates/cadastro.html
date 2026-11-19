@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Produtos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Cadastrar Produto</h1>
+    
+    <form action="/salvar" method="POST" enctype="multipart/form-data">
+        <div>
+            <input type="text" name="nome" placeholder="Nome do produto" required>
+        </div>
+        <br>
+        <div>
+            <input type="number" step="0.01" name="preco" placeholder="Preço" required>
+        </div>
+        <br>
+        <div>
+            <label for="categoria_id">Categoria:</label>
+            <select name="categoria_id" required>
+                <option value="">Selecione uma categoria</option>
+                {% for cat in categorias %}
+                    <option value="{{ cat.id }}">{{ cat.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <div>
+            <label>Foto do Produto:</label>
+            <input type="file" name="foto" accept="image/*">
+        </div>
+        <br>
+        <button type="submit">Salvar</button>
+    </form>
+
+    <br>
+    <hr>
+    
+    <h2>Lista de Produtos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Preço</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in produtos %}
+            <tr>
+                <td><img src="{{ url_for('static', filename='uploads/' + p.imagem) }}" width="50"></td>
+                <td>{{ p.id }}</td>
+                <td>{{ p.nome }}</td>
+                <td>{{ p.categoria.nome if p.categoria else 'Sem Categoria' }}</td>
+                <td>R$ {{ "%.2f"|format(p.valor) }}</td>
+                <td>
+                    <a href="/excluir/{{ p.id }}">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

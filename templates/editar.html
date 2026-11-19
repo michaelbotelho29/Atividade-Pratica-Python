@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Produto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Editar Produto</h1>
+    
+    <form action="/editar/{{ produto.id }}" method="POST" enctype="multipart/form-data">
+        <div>
+            <label>Nome do Produto:</label>
+            <input type="text" name="nome" value="{{ produto.nome }}" required>
+        </div>
+        <br>
+        <div>
+            <label>Preço:</label>
+            <input type="number" step="0.01" name="preco" value="{{ produto.valor }}" required>
+        </div>
+        <br>
+        <div>
+            <label>Categoria:</label>
+            <select name="categoria_id" required>
+                {% for cat in categorias %}
+                    <option value="{{ cat.id }}" {% if produto.categoria_id == cat.id %}selected{% endif %}>
+                        {{ cat.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <div>
+            <label>Foto Atual:</label><br>
+            <img src="{{ url_for('static', filename='uploads/' + produto.imagem) }}" width="60">
+        </div>
+        <br>
+        <div>
+            <label>Trocar Foto (Opcional):</label>
+            <input type="file" name="foto" accept="image/*">
+        </div>
+        <br>
+        <button type="submit">Salvar Alterações</button>
+    </form>
+    
+    <br>
+    <a href="/">Voltar ao Início</a>
+</body>
+</html>
